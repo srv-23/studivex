@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Studivex - Student Productivity Extension">
+  <title>Studivex</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="header-title">📚 Studivex</h1>
+      <p class="header-subtitle">Stay focused, stay organized</p>
+    </header>
+
+    <!-- Task Input Section -->
+    <section class="input-section" aria-label="Add new task">
+      <div class="input-group">
+        <input
+          type="text"
+          id="taskInput"
+          class="task-input"
+          placeholder="Add a task..."
+          aria-label="Task title input"
+          maxlength="150"
+        />
+        <select
+          id="prioritySelect"
+          class="priority-select"
+          aria-label="Task priority"
+        >
+          <option value="1">Low</option>
+          <option value="2" selected>Medium</option>
+          <option value="3">High</option>
+          <option value="4">Critical</option>
+        </select>
+      </div>
+      <button
+        id="addTaskBtn"
+        class="btn btn-primary"
+        aria-label="Add task"
+      >
+        + Add Task
+      </button>
+    </section>
+
+    <!-- Tasks List Section -->
+    <section class="tasks-section" aria-label="Task list">
+      <div class="tasks-header">
+        <h2 class="tasks-title">Tasks</h2>
+        <span class="task-count" id="taskCount" aria-live="polite">0</span>
+      </div>
+
+      <div id="tasksList" class="tasks-list" role="list">
+        <div class="empty-state">
+          <p>🎯 No tasks yet</p>
+          <p class="empty-state-hint">Add a task to get started!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer with Quick Actions -->
+    <footer class="footer">
+      <button
+        id="settingsBtn"
+        class="btn btn-secondary"
+        aria-label="Open settings"
+      >
+        ⚙️ Settings
+      </button>
+      <button
+        id="clearBtn"
+        class="btn btn-secondary"
+        aria-label="Clear completed tasks"
+      >
+        ✓ Clear Completed
+      </button>
+    </footer>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

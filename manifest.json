@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Studivex",
+  "version": "1.0.0",
+  "description": "Student productivity extension focused on task management, smart reminders, and performance optimization",
+  
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications"
+  ],
+
+  "action": {
+    "default_popup": "public/popup/popup.html",
+    "default_title": "Studivex - Productivity Hub",
+    "default_icon": {
+      "16": "public/assets/icons/icon-16.png",
+      "48": "public/assets/icons/icon-48.png",
+      "128": "public/assets/icons/icon-128.png"
+    }
+  },
+
+  "icons": {
+    "16": "public/assets/icons/icon-16.png",
+    "48": "public/assets/icons/icon-48.png",
+    "128": "public/assets/icons/icon-128.png"
+  },
+
+  "background": {
+    "service_worker": "src/background/serviceWorker.js",
+    "type": "module"
+  },
+
+  "host_permissions": [],
+
+  "web_accessible_resources": [],
+
+  "default_locale": "en"
+}
