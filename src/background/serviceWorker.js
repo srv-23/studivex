@@ -16,8 +16,6 @@ import {
   extractTaskIdFromAlarm,
   showTaskReminder,
   checkForOverdueTasks,
-  setupNotificationClickHandler,
-  setupNotificationCloseHandler,
   processPendingReminders,
   cleanupNotificationCache,
 } from '../utils/notifications.js';
@@ -47,8 +45,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === 'install') {
     console.log('Studivex installed - setting up');
     await setupInitialAlarms();
-    setupNotificationClickHandler();
-    setupNotificationCloseHandler();
   } else if (details.reason === 'update') {
     console.log('Studivex updated');
     // Re-setup alarms to catch any missed tasks
@@ -416,33 +412,6 @@ async function rescheduleAllReminders() {
 // ============================================
 
 /**
- * Show task reminder notification
- */
-async function showTaskReminder(task) {
-  try {
-    const notificationId = `reminder_${task.id}`;
-
-    await chrome.notifications.create(notificationId, {
-      type: 'basic',
-      title: '📌 Task Reminder',
-      message: task.title,
-      iconUrl: NOTIFICATION_ICON,
-      requireInteraction: true,
-      tag: 'studivex_reminder',
-    });
-
-    // Auto-close after 10 seconds
-    setTimeout(() => {
-      chrome.notifications.clear(notificationId);
-    }, 10000);
-
-    return notificationId;
-  } catch (error) {
-    console.error('Error showing notification:', error);
-  }
-}
-
-/**
  * Notification click handler
  * Could open popup or focus window
  */
@@ -463,20 +432,26 @@ chrome.notifications.onClicked.addListener((notificationId) => {
  * Keeps UI in sync without polling
  */
 function notifyTabsOfUpdate(action) {
-  chrome.runtime.sendMessage({
-    action,
-  }).catch(() => {
-    // Ignore errors - popup may not be open
-  });
-
-  // Also notify all tabs
-  chrome.tabs.query({}, (tabs) => {
-    tabs.forEach(tab => {
-      chrome.tabs.sendMessage(tab.id, { action }).catch(() => {
-        // Ignore errors - tab may have closed
+  try {
+    // Query all tabs and send message
+    chrome.tabs.query({}, (tabs) => {
+      if (!tabs || tabs.length === 0) return;
+      
+      tabs.forEach(tab => {
+        try {
+          chrome.tabs.sendMessage(tab.id, { action }).catch(() => {
+            // Ignore errors - tab may have closed
+          });
+        } catch (e) {
+          // Silently ignore
+        }
       });
+    }).catch(() => {
+      // Silently ignore if tabs.query fails
     });
-  });
+  } catch (error) {
+    console.debug('Tab notification skipped (service worker context)');
+  }
 }
 
 // ============================================

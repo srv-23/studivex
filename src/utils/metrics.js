@@ -18,7 +18,7 @@ const METRICS_STORAGE_KEY = 'studivex_metrics';
 const SESSION_STORAGE_KEY = 'studivex_session';
 
 // Metric types
-const METRIC_TYPES = {
+export const METRIC_TYPES = {
   TASK_CREATED: 'task_created',
   TASK_COMPLETED: 'task_completed',
   TASK_ABANDONED: 'task_abandoned',
@@ -30,7 +30,7 @@ const METRIC_TYPES = {
 };
 
 // Time buckets for analysis
-const TIME_RANGES = {
+export const TIME_RANGES = {
   TODAY: 'today',
   THIS_WEEK: 'this_week',
   THIS_MONTH: 'this_month',

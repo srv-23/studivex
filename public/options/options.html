@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studivex Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-container">
+    <!-- Header -->
+    <header class="header">
+      <h1>⚙️ Studivex Settings</h1>
+      <p>Configure your productivity experience</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="options-main">
+      <!-- Notifications Section -->
+      <section class="settings-section">
+        <h2>🔔 Notifications</h2>
+        <div class="setting-item">
+          <div class="setting-label">
+            <label for="notificationsEnabled">Enable Notifications</label>
+            <p class="setting-hint">Show reminders for upcoming tasks</p>
+          </div>
+          <input type="checkbox" id="notificationsEnabled" class="setting-toggle">
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-label">
+            <label for="quietHoursEnabled">Enable Quiet Hours</label>
+            <p class="setting-hint">No notifications during these hours</p>
+          </div>
+          <input type="checkbox" id="quietHoursEnabled" class="setting-toggle">
+        </div>
+
+        <div class="setting-item" id="quietHoursContainer" style="display: none;">
+          <div class="setting-label">
+            <label for="quietHoursStart">Quiet Hours Start</label>
+            <p class="setting-hint">When to stop showing notifications</p>
+          </div>
+          <input type="time" id="quietHoursStart" class="setting-input" value="23:00">
+        </div>
+
+        <div class="setting-item" id="quietHoursEndContainer" style="display: none;">
+          <div class="setting-label">
+            <label for="quietHoursEnd">Quiet Hours End</label>
+            <p class="setting-hint">When to resume showing notifications</p>
+          </div>
+          <input type="time" id="quietHoursEnd" class="setting-input" value="07:00">
+        </div>
+      </section>
+
+      <!-- Theme Section -->
+      <section class="settings-section">
+        <h2>🎨 Theme</h2>
+        <div class="setting-item">
+          <div class="setting-label">
+            <label for="themeSelect">Color Theme</label>
+            <p class="setting-hint">Choose your preferred theme</p>
+          </div>
+          <select id="themeSelect" class="setting-input">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="auto">Auto (System)</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Task Settings Section -->
+      <section class="settings-section">
+        <h2>📋 Task Settings</h2>
+        <div class="setting-item">
+          <div class="setting-label">
+            <label for="autoSortSelect">Auto Sort Tasks</label>
+            <p class="setting-hint">How to organize your task list</p>
+          </div>
+          <select id="autoSortSelect" class="setting-input">
+            <option value="priority">By Priority</option>
+            <option value="date">By Due Date</option>
+            <option value="created">By Created Date</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Metrics Section -->
+      <section class="settings-section">
+        <h2>📊 Productivity Metrics</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Completion Rate (Today)</div>
+            <div class="metric-value" id="metricTodayRate">-</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Tasks Created (Today)</div>
+            <div class="metric-value" id="metricTodayCreated">-</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Completion Rate (Week)</div>
+            <div class="metric-value" id="metricWeekRate">-</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Total Tasks Created</div>
+            <div class="metric-value" id="metricTotalCreated">-</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reset Section -->
+      <section class="settings-section">
+        <h2>🔄 Data Management</h2>
+        <button id="clearDataBtn" class="btn btn-danger">Clear All Data</button>
+        <p class="setting-hint">This will delete all tasks and settings. This action cannot be undone.</p>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="options-footer">
+      <p>Studivex v1.0.0</p>
+      <p id="saveStatus" class="save-status">✓ Settings saved</p>
+    </footer>
+  </div>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

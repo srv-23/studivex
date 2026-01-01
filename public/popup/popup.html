@@ -11,8 +11,15 @@
   <div class="popup-container">
     <!-- Header -->
     <header class="header">
-      <h1 class="header-title">📚 Studivex</h1>
-      <p class="header-subtitle">Stay focused, stay organized</p>
+      <div class="header-top">
+        <div>
+          <h1 class="header-title">📚 Studivex</h1>
+          <p class="header-subtitle">Stay focused, stay organized</p>
+        </div>
+        <button id="darkModeBtn" class="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          🌙
+        </button>
+      </div>
     </header>
 
     <!-- Task Input Section -->
@@ -37,13 +44,38 @@
           <option value="4">Critical</option>
         </select>
       </div>
-      <button
-        id="addTaskBtn"
-        class="btn btn-primary"
-        aria-label="Add task"
-      >
-        + Add Task
-      </button>
+      <textarea
+        id="descriptionInput"
+        class="task-description-input"
+        placeholder="Add description (optional)..."
+        aria-label="Task description input"
+        maxlength="300"
+        rows="2"
+      ></textarea>
+      <div class="input-group">
+        <input
+          type="number"
+          id="timeEstimateInput"
+          class="time-estimate-input"
+          placeholder="Minutes (optional)"
+          aria-label="Task time estimate"
+          min="1"
+          max="480"
+        />
+        <input
+          type="date"
+          id="dueDateInput"
+          class="due-date-input"
+          aria-label="Task due date"
+        />
+        <button
+          id="addTaskBtn"
+          class="btn btn-primary"
+          aria-label="Add task"
+        >
+          + Add Task
+        </button>
+      </div>
     </section>
 
     <!-- Tasks List Section -->
@@ -51,6 +83,21 @@
       <div class="tasks-header">
         <h2 class="tasks-title">Tasks</h2>
         <span class="task-count" id="taskCount" aria-live="polite">0</span>
+      </div>
+
+      <!-- Filter and Sort Controls -->
+      <div class="filter-sort-controls">
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="active">Active</button>
+          <button class="filter-btn" data-filter="completed">Done</button>
+        </div>
+        <select id="sortSelect" class="sort-select" aria-label="Sort tasks">
+          <option value="priority">Sort: Priority</option>
+          <option value="date">Sort: Due Date</option>
+          <option value="created">Sort: Created</option>
+          <option value="time">Sort: Time Est.</option>
+        </select>
       </div>
 
       <div id="tasksList" class="tasks-list" role="list">
@@ -78,6 +125,36 @@
         ✓ Clear Completed
       </button>
     </footer>
+  </div>
+
+  <!-- Focus Session Timer Modal -->
+  <div id="focusModal" class="focus-modal hidden">
+    <div class="focus-modal-content">
+      <div class="focus-modal-header">
+        <h2>⏱️ Focus Session</h2>
+        <button id="focusCloseBtn" class="modal-close" aria-label="Close focus session">&times;</button>
+      </div>
+      <div class="focus-modal-body">
+        <p class="focus-task-title" id="focusTaskTitle"></p>
+        
+        <div class="timer-display">
+          <div id="timerValue" class="timer-value">00:00</div>
+          <p class="timer-label">Time Remaining</p>
+        </div>
+
+        <div class="timer-controls">
+          <button id="timerStartBtn" class="btn btn-primary timer-btn">Start</button>
+          <button id="timerPauseBtn" class="btn btn-secondary timer-btn" disabled>Pause</button>
+          <button id="timerResetBtn" class="btn btn-secondary timer-btn">Reset</button>
+        </div>
+
+        <div class="timer-progress">
+          <div id="timerProgressBar" class="progress-bar"></div>
+        </div>
+
+        <p class="timer-note">Focus on your task. Timer will notify you when time is up.</p>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="popup.js"></script>

@@ -27,10 +27,21 @@
   --radius-md: 6px;
   --radius-lg: 8px;
   
-  --font-size-sm: 12px;
-  --font-size-base: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-lg: 17px;
+  --font-size-xl: 20px;
+}
+
+/* Dark mode */
+html.dark-mode {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --border-color: #3d3d3d;
+  --text-primary: #f5f5f5;
+  --text-secondary: #b0b0b0;
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
 }
 
 /* ============================================
@@ -44,7 +55,7 @@
 }
 
 html {
-  width: 400px;
+  width: 550px;
   font-size: 16px;
 }
 
@@ -65,8 +76,9 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  max-height: 600px;
+  max-height: 700px;
   background-color: var(--bg-primary);
+  min-height: 600px;
 }
 
 /* ============================================
@@ -77,8 +89,35 @@ body {
   padding: var(--spacing-lg);
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
   color: white;
-  text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.dark-mode-toggle {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dark-mode-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .header-title {
@@ -86,6 +125,7 @@ body {
   font-weight: 700;
   letter-spacing: -0.5px;
   margin-bottom: var(--spacing-xs);
+  text-align: center;
 }
 
 .header-subtitle {
@@ -111,7 +151,10 @@ body {
 }
 
 .task-input,
-.priority-select {
+.priority-select,
+.due-date-input,
+.time-estimate-input,
+.task-description-input {
   padding: var(--spacing-md) var(--spacing-md);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -119,6 +162,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
 }
 
 .task-input {
@@ -126,15 +170,30 @@ body {
   min-width: 0;
 }
 
+.time-estimate-input {
+  width: 120px;
+}
+
+.task-description-input {
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+  resize: vertical;
+  min-height: 60px;
+}
+
 .task-input:focus,
-.priority-select:focus {
+.priority-select:focus,
+.due-date-input:focus,
+.time-estimate-input:focus,
+.task-description-input:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
 }
 
-.priority-select {
-  width: 110px;
+.priority-select,
+.due-date-input,
+.time-estimate-input {
   cursor: pointer;
 }
 
@@ -220,6 +279,59 @@ body {
 }
 
 /* ============================================
+   Filter & Sort Controls
+   ============================================ */
+
+.filter-sort-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  align-items: center;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary-color);
+  background-color: var(--bg-primary);
+}
+
+.filter-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.sort-select {
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+/* ============================================
    Tasks List
    ============================================ */
 
@@ -286,7 +398,23 @@ body {
   font-weight: 600;
   color: var(--text-primary);
   word-break: break-word;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+}
+
+.task-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  word-break: break-word;
+  margin-bottom: 4px;
+  padding: 4px 0;
+  line-height: 1.4;
+}
+
+.task-meta {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .task-priority {
@@ -294,6 +422,31 @@ body {
   font-size: var(--font-size-sm);
   padding: 2px 6px;
   border-radius: 3px;
+  font-weight: 600;
+}
+
+.task-due-date {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  padding: 2px 6px;
+  border-radius: 3px;
+  background-color: #f0fdf4;
+  color: #166534;
+  font-weight: 600;
+}
+
+.task-due-date.overdue {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.task-time-estimate {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  padding: 2px 6px;
+  border-radius: 3px;
+  background-color: #ede9fe;
+  color: #6d28d9;
   font-weight: 600;
 }
 
@@ -375,6 +528,153 @@ body {
 :focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
+}
+
+/* ============================================
+   Focus Session Timer Modal
+   ============================================ */
+
+.focus-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.focus-modal.hidden {
+  display: none;
+}
+
+.focus-modal-content {
+  background-color: var(--bg-primary);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  width: 90%;
+  max-width: 350px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.focus-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.focus-modal-header h2 {
+  font-size: 20px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: var(--danger-color);
+}
+
+.focus-modal-body {
+  text-align: center;
+}
+
+.focus-task-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  word-break: break-word;
+}
+
+.timer-display {
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-lg);
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+}
+
+.timer-value {
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--primary-color);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+}
+
+.timer-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-lg) 0;
+}
+
+.timer-btn {
+  flex: 1;
+  padding: 10px !important;
+  font-size: 14px !important;
+}
+
+.timer-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.timer-progress {
+  width: 100%;
+  height: 4px;
+  background-color: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: var(--spacing-md) 0;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--success-color) 100%);
+  width: 0%;
+  transition: width 1s linear;
+}
+
+.timer-note {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: var(--spacing-md);
+  font-style: italic;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ============================================

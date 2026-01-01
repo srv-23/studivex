@@ -8,6 +8,7 @@
  */
 
 import { getTasks } from './storage.js';
+import { TASK_PRIORITY } from '../constants/config.js';
 
 // ============================================
 // Constants
@@ -57,7 +58,7 @@ export function extractTaskIdFromAlarm(alarmName) {
  */
 export function extractPriorityFromAlarm(alarmName) {
   const match = alarmName.match(/studivex_reminder_p(\d+)_/);
-  return match ? parseInt(match[1], 10) : PRIORITY_LEVELS.MEDIUM;
+  return match ? parseInt(match[1], 10) : TASK_PRIORITY.MEDIUM;
 }
 
 // ============================================
@@ -233,10 +234,10 @@ export function isTaskEligibleForReminder(task) {
  */
 function getPriorityDescription(priority) {
   const descriptions = {
-    [PRIORITY_LEVELS.LOW]: 'Low',
-    [PRIORITY_LEVELS.MEDIUM]: 'Medium',
-    [PRIORITY_LEVELS.HIGH]: 'High',
-    [PRIORITY_LEVELS.CRITICAL]: 'Critical',
+    [TASK_PRIORITY.LOW]: 'Low',
+    [TASK_PRIORITY.MEDIUM]: 'Medium',
+    [TASK_PRIORITY.HIGH]: 'High',
+    [TASK_PRIORITY.CRITICAL]: 'Critical',
   };
   return descriptions[priority] || 'Unknown';
 }
@@ -280,7 +281,7 @@ export async function showTaskReminder(task) {
       title: `📌 ${priorityLabel} Priority Reminder`,
       message: task.title,
       iconUrl: NOTIFICATION_ICON,
-      requireInteraction: task.priority >= PRIORITY_LEVELS.HIGH,
+      requireInteraction: task.priority >= TASK_PRIORITY.HIGH,
       tag: `studivex_reminder_${task.id}`,
       priority: Math.min(2, Math.floor((task.priority - 1) / 2)), // Map to notification priority 0-2
     });
